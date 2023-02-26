@@ -10,6 +10,7 @@ YOU ARE NOT ALLOWED TO MODIFY THE STRUCT AND THE FUNCTION PROTOTYPES
 
 #include "stdio.h"
 #include "stdlib.h"
+#include "string.h"
 
 #include "node.h"
 
@@ -18,6 +19,14 @@ typedef struct {
 	int nCount;
 	sNode *pTop;
 } stack;
+
+
+void printStr(char *strin){
+	for(int i = 0; i < strlen(strin); i++){
+		printf("%c", strin[i]);
+	}
+}
+
 
 stack* createStack(int n) {
 	stack *stacky = malloc(sizeof(stack)); 
@@ -47,16 +56,11 @@ void displayStack(stack *s) {
 				for(int j = s->nCount; j > i; j--){
 					iNode = iNode->pLink;
 				}
-				printf("%c ", *(iNode->data));
+				printStr(iNode->data); printf(" ");
 			}
 			else{
 				printf("□ ");
 			}
-		}
-		printf("\n");
-		for(int i = 1; i <= s->n; i++){
-			if(i == s->nCount) printf("△ ");
-			else printf("  ");
 		}
 		printf("\n\n");
 	}
@@ -69,8 +73,11 @@ void push(stack **s, char *data) {
 	if(!stackFull(*s)){
 		sNode *sNewNode = malloc(sizeof(sNode));
 
-		char *dat = malloc(sizeof(char));
-		*dat = *data;
+		char *dat = malloc(sizeof(char)*15);
+		
+		for(int i = 0; i < strlen(data); i++){
+			*(dat + i) = *(data + i);
+		}
 		
 		sNewNode->data = dat;
 		if((*s)->nCount != 0){
@@ -79,7 +86,7 @@ void push(stack **s, char *data) {
 		(*s)->pTop = sNewNode;
 		
 		++(*s)->nCount;
-		printf("[+] Pushed \"%c\" to stack!\n", *data); //display
+		printf("[+] Pushed \""); printStr((*s)->pTop->data); printf("\" to stack!\n"); //display
 		displayStack(*s); //display
 	}
 	else{
@@ -89,12 +96,17 @@ void push(stack **s, char *data) {
 
 char* pop(stack **s) {
 	if(!stackEmpty(*s)){
-		char *data = (*s)->pTop->data;
+		char c[15];
+		char *data = c;
+
+		for(int i = 0; i < strlen((*s)->pTop->data); i++){
+			*(data + i) = *((*s)->pTop->data + i);
+		}
 
 		(*s)->pTop = (*s)->pTop->pLink;
 
 		--(*s)->nCount;
-		printf("[-] Popped stack and returned \"%c\"\n", *data); //display
+		printf("[-] Popped stack and returned \""); printStr(data); printf("\"\n"); //display
 		displayStack(*s); //display
 		return data;
 	}
