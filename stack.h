@@ -2,6 +2,8 @@
 YOU ARE NOT ALLOWED TO MODIFY THE STRUCT AND THE FUNCTION PROTOTYPES
 *******************************************************************/
 
+#include "node.h"
+
 typedef struct {
 	int n;
 	int nCount;
