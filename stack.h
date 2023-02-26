@@ -2,6 +2,12 @@
 YOU ARE NOT ALLOWED TO MODIFY THE STRUCT AND THE FUNCTION PROTOTYPES
 *******************************************************************/
 
+/*
+  note: Lines in the code that have "display" at the end are meant for updates to the stack status.
+        You may comment the entire lines if they are not necessary.
+		!!!displayStacks() & top() is an exception!!!
+*/
+
 #include "stdio.h"
 #include "stdlib.h"
 
@@ -18,7 +24,7 @@ stack* createStack(int n) {
 	stacky->n = n;
 	stacky->nCount = 0;
 	stacky->pTop = NULL;
-	printf("A Stack has been created with %d slots!\n\n", n);
+	printf("A Stack has been created with %d slots!\n\n", n); //display
 	return stacky;
 }
 
@@ -73,11 +79,11 @@ void push(stack **s, char *data) {
 		(*s)->pTop = sNewNode;
 		
 		++(*s)->nCount;
-		printf("[+] Pushed \"%c\" to stack!\n", *data);
-		displayStack(*s);
+		printf("[+] Pushed \"%c\" to stack!\n", *data); //display
+		displayStack(*s); //display
 	}
 	else{
-		printf("Stack is currenty full!\n");
+		printf("Stack is currenty full!\n"); //display
 	}
 }
 
@@ -88,12 +94,12 @@ char* pop(stack **s) {
 		(*s)->pTop = (*s)->pTop->pLink;
 
 		--(*s)->nCount;
-		printf("[-] Popped stack and returned \"%c\"\n", *data);
-		displayStack(*s);
+		printf("[-] Popped stack and returned \"%c\"\n", *data); //display
+		displayStack(*s); //display
 		return data;
 	}
 	else{
-		printf("Stack is currently empty!");
+		printf("Stack is currently empty!"); //display
 		return NULL;
 	}
 	
