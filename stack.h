@@ -112,7 +112,7 @@ char* top(stack *s) {
 	}
 	else{
 		printf("Nothing to display...\n\n");
-		return NULL;
+		return '\0';
 	}
 	
 }
