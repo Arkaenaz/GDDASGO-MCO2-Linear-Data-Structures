@@ -108,9 +108,11 @@ char* pop(stack **s) {
 char* top(stack *s) {
 	if(!stackEmpty(s)){
 		printf("Current Top Data of Stack: %c\n\n", *(s->pTop->data));
+		return s->pTop->data;
 	}
 	else{
 		printf("Nothing to display...\n\n");
+		return NULL;
 	}
-	return s->pTop->data;
+	
 }
