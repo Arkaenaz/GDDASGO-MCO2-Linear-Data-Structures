@@ -4,7 +4,7 @@ YOU ARE NOT ALLOWED TO MODIFY THE STRUCT AND THE FUNCTION PROTOTYPES
 
 /*
   note: Lines in the code that have "display" at the end are meant for updates to the stack status.
-        You may comment the entire lines if they are not necessary.
+        You may comment the entire lines if these updates are not necessary.
 		!!!displayStacks() & top() is an exception!!!
 */
 
@@ -106,6 +106,11 @@ char* pop(stack **s) {
 }
 
 char* top(stack *s) {
-	printf("Current Top Data of Stack: %c\n\n", *(s->pTop->data));
+	if(!stackEmpty(s)){
+		printf("Current Top Data of Stack: %c\n\n", *(s->pTop->data));
+	}
+	else{
+		printf("Nothing to display...\n\n");
+	}
 	return s->pTop->data;
 }
