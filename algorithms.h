@@ -30,10 +30,10 @@ int checkOperand(char *strTemp){
 	else if(strcmp(strTemp,"/") == 0 || strcmp(strTemp,"*") == 0){
 		return 2;
 	}
-	else if(strcmp(strTemp,">") == 0 || strcmp(strTemp,"<") == 0 || strcmp(strTemp,">=") == 0 || strcmp(strTemp,"<=") == 0 || strcmp(strTemp,"!=") == 0 || strcmp(strTemp,"==") == 0){
+	else if(strcmp(strTemp,"!") == 0 || strcmp(strTemp,"&&") == 0 || strcmp(strTemp,"||") == 0){
 		return 3;
 	}
-	else if(strcmp(strTemp,"!") == 0 || strcmp(strTemp,"&&") == 0 || strcmp(strTemp,"||") == 0){
+	else if(strcmp(strTemp,">") == 0 || strcmp(strTemp,"<") == 0 || strcmp(strTemp,">=") == 0 || strcmp(strTemp,"<=") == 0 || strcmp(strTemp,"!=") == 0 || strcmp(strTemp,"==") == 0){
 		return 4;
 	}
 	else if(strcmp(strTemp,")") == 0){
@@ -46,11 +46,7 @@ int isHigherOperand(int nOp, stack *sStack){
 	if(top(sStack) == NULL){
 		return 0;
 	}
-	char strTemp[3];
-	strcpy(strTemp,top(sStack));
-	strTemp[1] = '\0';
-	int nTopOp = checkOperand(strTemp);
-	printf("check operand: %d  vs  %d,  %s\n\n",nOp,nTopOp,strTemp);
+	int nTopOp = checkOperand(top(sStack));
 	if(nOp <= nTopOp){
 		return 1;
 	}
@@ -58,71 +54,74 @@ int isHigherOperand(int nOp, stack *sStack){
 }
 
 void popOp(int nOp, stack *sStack, char *postfix){
-	int nGo = 1;
+	int nGo = checkOperand(top(sStack));
 	char strTemp[3];
-	do{
-		printf("%s\n\n",top(sStack));
-		strcpy(strTemp,top(sStack));
-		strTemp[1] = '\0';
-		if(checkOperand(top(sStack)) == 0){
+	while(nOp<=nGo){
+		if(checkOperand(top(sStack)) == 0 || checkOperand(top(sStack)) == 5){
 				pop(&sStack);
 		}
 		else{
 			strcpy(strTemp,pop(&sStack));
-			strTemp[1] = '\0';
+			strcat(strTemp, " ");
 			strcat(postfix,strTemp);
-			strcat(postfix, " ");
 		}
+		
 		nGo = isHigherOperand(nOp, sStack);
 
 		if(top(sStack) == NULL){
 			nGo = -1;
 		}
-	}while(nOp<=nGo);
+	}
 }
 
 void infixToPostfix(char *infix, char *postfix) {
 	// Your code here
-	stack* sStack = createStack(256);
+	stack* sStack = createStack(10);
 	int nOp;
 	char strTemp[256];
 
 	int i;
-	for(i = 0; i<strlen(infix); i++){
+	for(i = 0; i<=strlen(infix); i++){
 		if(*(infix+i) != ' ' && *(infix+i) != '\0'){
 			strncat(strTemp,infix+i,1);
-			printf("%d, %s\n",i,strTemp);
+			//("%d, %s\n",i,strTemp);
 		}
 		else if(*(infix+i) == ' '){
-			nOp = checkOperand(strTemp);
-			switch(nOp){
-				case 0:
-					push(&sStack,strTemp);
-					break;
-				case 1:case 2:case 3:case 4:
-					//
-					if(isHigherOperand(nOp,sStack) == 1){
-						popOp(nOp,sStack,postfix);
+			//failsafe if strTemp is empty for some reason
+			if(strTemp[0]!='\0'){
+				nOp = checkOperand(strTemp);
+				//printf("\n%d\n",nOp);
+				switch(nOp){
+					case 0:
 						push(&sStack,strTemp);
-					}
-					else{
-						push(&sStack,strTemp);
-					}
-					break;
-				case 5:
-					popOp(1,sStack,postfix);
-					break;
-				default:
-					strcat(postfix, strTemp);
-					break;
+						break;
+					case 1:case 2:case 3:case 4:
+						//
+						if(isHigherOperand(nOp,sStack) == 1){
+							popOp(nOp,sStack,postfix);
+							push(&sStack,strTemp);
+						}
+						else{
+							push(&sStack,strTemp);
+						}
+						break;
+					case 5:
+						pop(&sStack);
+						popOp(1,sStack,postfix);
+						break;
+					default:
+						strcat(strTemp," ");
+						strcat(postfix, strTemp);
+						break;
+				}
+				//printf("\n%d, %s, postfix  %s\n\n",i,strTemp,postfix);
+				strTemp[0] = '\0';
 			}
-			printf("\n%d, %s, postfix  %s\n\n",i,strTemp,postfix);
-			strcat(postfix, " ");
-			strTemp[0] = '\0';
 		}
 	}
-	strcat(postfix, strTemp);
-	strcat(postfix, " ");
+	if(strcmp(strTemp,")") != 0){
+		strcat(postfix, strTemp);
+	}
 	popOp(0,sStack,postfix);
 }
 

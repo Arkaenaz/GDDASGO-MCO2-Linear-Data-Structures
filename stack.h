@@ -33,7 +33,7 @@ stack* createStack(int n) {
 	stacky->n = n;
 	stacky->nCount = 0;
 	stacky->pTop = NULL;
-	printf("A Stack has been created with %d slots!\n\n", n); //display
+	//printf("A Stack has been created with %d slots!\n\n", n); //display
 	return stacky;
 }
 
@@ -71,13 +71,18 @@ void displayStack(stack *s) {
 
 void push(stack **s, char *data) {
 	if(!stackFull(*s)){
+		//printf("[+] Pushing \"%s\" to stack!\n",data);
 		sNode *sNewNode = malloc(sizeof(sNode));
 
-		char *dat = malloc(sizeof(char)*15);
+		char *dat = malloc(sizeof(data)+1);
 		
-		for(int i = 0; i < strlen(data); i++){
+		/*for(int i = 0; i < strlen(data); i++){
 			*(dat + i) = *(data + i);
-		}
+		}*/
+
+		strcpy(dat,data);
+
+		dat[strlen(data)+1] = '\0';
 		
 		sNewNode->data = dat;
 		if((*s)->nCount != 0){
@@ -86,28 +91,23 @@ void push(stack **s, char *data) {
 		(*s)->pTop = sNewNode;
 		
 		++(*s)->nCount;
-		printf("[+] Pushed \""); printStr((*s)->pTop->data); printf("\" to stack!\n"); //display
-		displayStack(*s); //display
+		//printf("[+] Pushed \""); printStr((*s)->pTop->data); printf("\" to stack!\n"); //display
+		//displayStack(*s); //display
 	}
 	else{
-		printf("Stack is currenty full!\n"); //display
+		//printf("Stack is currenty full!\n"); //display
 	}
 }
 
 char* pop(stack **s) {
 	if(!stackEmpty(*s)){
-		char c[15];
-		char *data = c;
-
-		for(int i = 0; i < strlen((*s)->pTop->data); i++){
-			*(data + i) = *((*s)->pTop->data + i);
-		}
+		char *data = (*s)->pTop->data;
 
 		(*s)->pTop = (*s)->pTop->pLink;
 
 		--(*s)->nCount;
-		printf("[-] Popped stack and returned \""); printStr(data); printf("\"\n"); //display
-		displayStack(*s); //display
+		//printf("[-] Popped stack and returned \""); printStr(data); printf("\"\n"); //display
+		//displayStack(*s); //display
 		return data;
 	}
 	else{
@@ -119,11 +119,11 @@ char* pop(stack **s) {
 
 char* top(stack *s) {
 	if(!stackEmpty(s)){
-		printf("Current Top Data of Stack: %c\n\n", *(s->pTop->data));
+		//printf("Current Top Data of Stack: %c\n\n", *(s->pTop->data));
 		return s->pTop->data;
 	}
 	else{
-		printf("Nothing to display...\n\n");
+		//printf("Nothing to display...\n\n");
 		return '\0';
 	}
 	
