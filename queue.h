@@ -2,6 +2,9 @@
 YOU ARE NOT ALLOWED TO MODIFY THE STRUCT AND THE FUNCTION PROTOTYPES
 *******************************************************************/
 
+#ifndef QUEUE_H
+#define QUEUE_H
+
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
@@ -140,4 +143,4 @@ char* tail(queue *q) {
 	return q->pTail->data;
 }
 
-
+#endif

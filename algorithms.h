@@ -2,7 +2,11 @@
 YOU ARE NOT ALLOWED TO MODIFY THE FUNCTION PROTOTYPES
 *****************************************************/
 
+#ifndef ALGO_H
+#define ALGO_H
+
 #include "stack.h"
+#include "queue.h"
 #include "string.h"
 #include "stdlib.h"
 
@@ -64,30 +68,22 @@ void infixToPostfix(char *infix, char *postfix) {
 	// Your code here
 	stack* pStack = createStack(10);
 	int nOp;
-	char *strTemp = malloc(sizeof(char)+257);
+	char strTemp[257] = "";
 
-	int i,j;
+	int i;
 	for(i = 0; i<=strlen(infix); i++){
 		if(*(infix+i) != ' ' && *(infix+i) != '\0'){
-			printf("%s",infix+i);
 			strncat(strTemp,infix+i,1);
-			j++;
-			//("%d, %s\n",i,strTemp);
 		}
 		else if(*(infix+i) == ' '){
 			//failsafe if strTemp is empty for some reason
-			strTemp[j]='\0';
-			j=0;
 			if(strTemp[0]!='\0'){
 				nOp = checkOperand(strTemp);
-				//printf("\n%d\n",nOp);
-				printf("\n%s\n",strTemp);
 				switch(nOp){
 					case 0:
 						push(&pStack,strTemp);
 						break;
 					case 1:case 2:case 3:case 4:
-						//
 						if(isHigherOperand(nOp,pStack) == 1){
 							popOp(nOp,pStack,postfix);
 							push(&pStack,strTemp);
@@ -105,32 +101,44 @@ void infixToPostfix(char *infix, char *postfix) {
 						strcat(postfix, strTemp);
 						break;
 				}
-				printf("\n%d, %s, postfix  %s\n\n",i,strTemp,postfix);
 				strTemp[0] = '\0';
 			}
 		}
 	}
 	if(strcmp(strTemp,")") != 0){
+		strcat(strTemp," ");
 		strcat(postfix, strTemp);
 	}
 	popOp(0,pStack,postfix);
+
+	//I do not know where the '\n' comes from but here's my quick fix to remove said character
+	int nPos = strcspn(postfix,"\n");
+	while(nPos<strlen(postfix)){
+		strcpy(&postfix[nPos],&postfix[nPos+1]);
+		nPos = strcspn(postfix,"\n");
+	}
+	//Idk why its adding ) either...
+	nPos = strcspn(postfix,")");
+	while(nPos<strlen(postfix)){
+		strcpy(&postfix[nPos],&postfix[nPos+2]);
+		nPos = strcspn(postfix,"\n");
+	}
 }
 
 int evaluatePostfix(char *postfix) {
 	// Your code here
 	stack* pStack = createStack(10);
 	int i,n1,n2;
-	char strTemp[256];
+	char strTemp[256] = "";
 	char *empty;
 	
+
 	for(i = 0; i<=strlen(postfix); i++){
 		if(*(postfix+i) != ' ' && *(postfix+i) != '\0'){
 			strncat(strTemp,postfix+i,1);
-			printf("strTemp update: %s\n",strTemp);
 		}
 		else if(*(postfix+i) == ' '){
 			//failsafe if strTemp is empty for some reason
-			printf("strTemp is %s\n\n",strTemp);
 			if(strTemp[0]!='\0'){
 				if(strcmp(strTemp,"+") == 0){
 					n2 = (int)strtol(pop(&pStack),&empty,10);
@@ -147,6 +155,9 @@ int evaluatePostfix(char *postfix) {
 				else if(strcmp(strTemp,"/") == 0){
 					n2 = (int)strtol(pop(&pStack),&empty,10);
 					n1 = (int)strtol(pop(&pStack),&empty,10);
+					if(n2 == 0){
+						return -1;
+					}
 					sprintf(strTemp,"%d",n1/n2);
 					push(&pStack,strTemp);
 				}
@@ -258,8 +269,11 @@ int evaluatePostfix(char *postfix) {
 					push(&pStack,strTemp);
 				}
 			}
+			strTemp[0] = '\0';
 		}
 	}
 
 	return (int)strtol(pop(&pStack),&empty,10);
 }
+
+#endif

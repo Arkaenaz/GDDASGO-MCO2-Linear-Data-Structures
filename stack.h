@@ -8,6 +8,9 @@ YOU ARE NOT ALLOWED TO MODIFY THE STRUCT AND THE FUNCTION PROTOTYPES
 		!!!displayStacks() & top() is an exception!!!
 */
 
+#ifndef STACK_H
+#define STACK_H
+
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
@@ -128,3 +131,5 @@ char* top(stack *s) {
 	}
 	
 }
+
+#endif
