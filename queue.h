@@ -34,7 +34,7 @@ queue* createQueue(int n) {
 }
 
 int queueEmpty(queue *q) {
-	if (q->pHead == NULL && q->pTail == NULL)
+	if (/*q->pHead == NULL && q->pTail == NULL*/ q->nCount == 0)
 		return 1;
 	else
 		return 0;
@@ -95,12 +95,11 @@ char* dequeue(queue **q) {
 	if (!queueEmpty(*q)) {
 		(*q)->pHead = (*q)->pHead->pLink;
 		(*q)->nCount--;
-		return cData;
 	}
 	else {
-		return NULL;
+		cData = NULL;
 	}
-	
+	return cData;
 }
 
 void displayQueue(queue *q) {
@@ -121,7 +120,7 @@ void displayQueue(queue *q) {
 				pTemp = pTemp->pLink;
 			}
 			else*/
-			if (i <  q->nCount){
+			if (i < q->nCount) {
 				printf("%s ", pTemp->data);
 				pTemp = pTemp->pLink;
 			}
