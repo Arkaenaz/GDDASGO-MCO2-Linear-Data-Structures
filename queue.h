@@ -41,7 +41,7 @@ int queueEmpty(queue *q) {
 }
 
 int queueFull(queue *q) {
-	if (q->nCount == q->n - 1) 
+	if (q->nCount == q->n) 
 		return 1;
 	else
 		return 0;
@@ -116,10 +116,12 @@ void displayQueue(queue *q) {
 				//printf("%s ", pTemp->data);
 			//	pTemp = pTemp->pLink;
 			//}
-			if (queueFull(q)) {
+			/*if (queueFull(q)) {
 				printf("%s ", pTemp->data);
+				pTemp = pTemp->pLink;
 			}
-			else if (i <  q->nCount){
+			else*/
+			if (i <  q->nCount){
 				printf("%s ", pTemp->data);
 				pTemp = pTemp->pLink;
 			}
