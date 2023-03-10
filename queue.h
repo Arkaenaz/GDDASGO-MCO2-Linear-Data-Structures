@@ -91,12 +91,16 @@ void enqueue(queue **q, char *data) {
 }
 
 char* dequeue(queue **q) {
-		char *cData = (*q)->pHead->data;
+	char *cData = (*q)->pHead->data;
 	if (!queueEmpty(*q)) {
 		(*q)->pHead = (*q)->pHead->pLink;
 		(*q)->nCount--;
+		return cData;
 	}
-	return cData;
+	else {
+		return NULL;
+	}
+	
 }
 
 void displayQueue(queue *q) {
@@ -112,7 +116,7 @@ void displayQueue(queue *q) {
 				//printf("%s ", pTemp->data);
 			//	pTemp = pTemp->pLink;
 			//}
-			if (i <  q->nCount){
+			if (i <=  q->nCount){
 				printf("%s ", pTemp->data);
 				pTemp = pTemp->pLink;
 			}
