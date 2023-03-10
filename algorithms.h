@@ -111,18 +111,6 @@ void infixToPostfix(char *infix, char *postfix) {
 	}
 	popOp(0,pStack,postfix);
 
-	//I do not know where the '\n' comes from but here's my quick fix to remove said character
-	int nPos = strcspn(postfix,"\n");
-	while(nPos<strlen(postfix)){
-		strcpy(&postfix[nPos],&postfix[nPos+1]);
-		nPos = strcspn(postfix,"\n");
-	}
-	//Idk why its adding ) either...
-	nPos = strcspn(postfix,")");
-	while(nPos<strlen(postfix)){
-		strcpy(&postfix[nPos],&postfix[nPos+2]);
-		nPos = strcspn(postfix,"\n");
-	}
 }
 
 int evaluatePostfix(char *postfix) {

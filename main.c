@@ -15,8 +15,13 @@ int main() {
 	char postfix[257] = "";	
 	int nEvaluate;
 
-	fgets(infix, 256, stdin);
-	while(strcmp(infix,"QUIT")!=0){
+	while(fgets(infix, 256, stdin) != NULL){
+		infix[strcspn(infix,"\n")]= '\0';
+
+		if(strcmp(infix, "QUIT") == 0){
+			break;
+		}
+
 		infixToPostfix(infix,postfix);
 		printf("%s\n",postfix);
 		
@@ -29,8 +34,8 @@ int main() {
 			printf("%d\n\n",nEvaluate);
     	}
 
-		fgets(infix, 256, stdin);
 		strcpy(postfix,"");
+
 	}
 
 	return 0;
